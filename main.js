@@ -11,44 +11,57 @@ const {app, BrowserWindow} = require('electron')
 
 const debug = /--debug/.test(process.argv[2])
 
+app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+app.commandLine.appendSwitch('-enable-touch-events');
 if (process.mas) app.setName('Electron APIs')
 
-let mainWindow = null
-
+let mainWindow = null;
 function initialize () {
   makeSingleInstance()
 
-  loadDemos()
+  // loadDemos()
 
   function createWindow () {
     const windowOptions = {
-      width: 1080,
-      minWidth: 680,
-      height: 840,
+      width: 800,
+      minWidth: 375,
+      height: 1120,
       title: app.getName(),
       webPreferences: {
         nodeIntegration: true,
+        webviewTag: true,
+        webSecurity: false,
+        allowRunningInsecureContent: true,
         preload: path.join(__dirname, 'preload.js'),
       }
     }
-
     if (process.platform === 'linux') {
       windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/512.png')
+    } 
+    
+    mainWindow = new BrowserWindow(windowOptions)
+    // This is where the magic happens!
+    try {
+      mainWindow.webContents.debugger.attach('1.2')
+    } catch (err) {
+      console.log('Debugger attach failed: ', err)
     }
 
-    mainWindow = new BrowserWindow(windowOptions)
-    mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
-    // mainWindow.webContents.enableDeviceEmulation({
-    //   screenPosition: 'mobile',
-    //   screenSize:  { width: 375, height: 667 },
-    //   viewPosition: {
-    //     x: 0,
-    //     y: 0,
-    //   },
-    //   viewSize: { width: 375, height: 667 },
-    // })
+    // This is where the magic happens!
+    mainWindow.webContents.debugger.sendCommand('Emulation.setTouchEmulationEnabled', {
+      enabled: true,
+      configuration: 'mobile',
+    }).catch(err => {
+      console.log(err)
+    });
+    mainWindow.webContents.debugger.sendCommand('Emulation.setEmitTouchEventsForMouse', {
+      enabled: true,
+    }).catch(err => {
+      console.log(err)
+    });
+    mainWindow.loadURL(path.join('file://', __dirname, '/views/homepage.html'))
 
-    // Launch fullscreen with DevTools open, usage: npm run debug
+    // Launch fullscreen with DevTools open, usage: npm run dev
     if (debug) {
       mainWindow.webContents.openDevTools()
       mainWindow.maximize()
@@ -57,6 +70,11 @@ function initialize () {
 
     mainWindow.on('closed', () => {
       mainWindow = null
+      console.log("closed11")
+    })
+
+    mainWindow.on('reload', () => {
+      console.log("reload11")
     })
   }
 

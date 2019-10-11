@@ -1,0 +1,23 @@
+html body {
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+
+.homepage {
+  color: blue;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+.channel-webview {
+  min-height: 812px;
+}
+
+/*# sourceMappingURL=../../dist/main/homepage.css.map */

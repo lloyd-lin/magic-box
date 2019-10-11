@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>First Electron</title>
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="../dist/main/homepage.css">
+    <script>
+      require('../lib/service')
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="tsapp"></div>
+    <script type="text/javascript">
+      require('../dist/main/homepage')
+      const { remote } = window.require('electron');
+       // 刷新时重启代理
+      remote.app.closeProxy();
+      remote.app.createServer();
+    </script>
+  </body>
+</html>
