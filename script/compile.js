@@ -12,11 +12,25 @@ const merge2 = require('merge2');
 const del = require('del');
 const ts = require('gulp-typescript');
 const getTsCompileConfig = require('../utils/ts.config.base')
-
+const webpack = require('webpack')
+const webpackConfig = require('../utils/webpack.config.base');
 gulp.task('clean', () => {
   return del([
     'dist/**/*',
   ])
+});
+
+gulp.task('compile-webpack', (done) => {
+  webpack(webpackConfig, (err, stats) => {
+    if (err) {
+      console.error(err.stack || err);
+      if (err.details) {
+        console.error(err.details);
+      }
+      return;
+    }
+    done(0);
+  });
 });
 
 gulp.task('compile-jsx', () => {
@@ -78,8 +92,8 @@ gulp.task('compile-tsx', () => {
 
 
 exports['clean'] = gulp.series('clean');
-exports['compile'] = gulp.series('clean', 'compile-lib', 'compile-jsx', 'compile-scss','compile-static','compile-tsx')
+exports['compile'] = gulp.series('clean', 'compile-lib', 'compile-webpack', 'compile-scss','compile-static','compile-tsx')
 
 exports['compile:watch'] = function() {
-  return gulp.watch(['src/**/*', 'lib/**/*.jsx'], gulp.series('clean', 'compile-lib', 'compile-jsx', 'compile-scss','compile-static','compile-tsx'))
+  return gulp.watch(['src/**/*', 'lib/**/*.jsx'], gulp.series('clean', 'compile-lib', 'compile-webpack', 'compile-scss','compile-static','compile-tsx'))
 }

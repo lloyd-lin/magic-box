@@ -4,7 +4,7 @@ html body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: black;
+  background-color: white;
 }
 
 .homepage {
@@ -17,7 +17,11 @@ html body {
 }
 
 .channel-webview {
-  min-height: 812px;
+  min-height: 832px;
+  min-width: 395px;
+  padding: 70px 20px 40px 20px;
+  background: url("./images/iphoneX.png") 0 0 no-repeat;
+  background-size: 395px 832px;
 }
 
 /*# sourceMappingURL=../../dist/main/homepage.css.map */

@@ -1,0 +1,12 @@
+.track-panel {
+  overflow-x: auto;
+  height: 800px;
+  margin: 2rem;
+  border: 1px grey;
+}
+
+.track-panel th.ant-descriptions-item-label {
+  width: 120px;
+}
+
+/*# sourceMappingURL=../../../dist/renderer/trace-panel/track.css.map */

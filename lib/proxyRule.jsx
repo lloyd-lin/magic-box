@@ -1,5 +1,4 @@
-// import urlStore from './data-reslover';
-
+import { remote, app } from 'electron';
 module.exports = {
   // 模块介绍
   summary: 'my customized rule for AnyProxy',
@@ -18,9 +17,13 @@ module.exports = {
    * @returns
    */
   *beforeSendRequest(requestDetail) { 
-    if (~requestDetail.url.indexOf('perf.lu.com')) {
-      // urlStore.appendUrl(requestDetail.url);
-      console.log(1,requestDetail.url)
+    if (~requestDetail.url.indexOf('perf.lu.com') && (!~requestDetail.url.indexOf('pharos'))) {
+      try {
+        magicWindow.webContents.send('http.beforeSendRequest', requestDetail)
+      } catch (e) {
+        console.log(e);
+      }
+      console.log('proxyRule',requestDetail.url)
     }
     return null;
   },
@@ -32,4 +35,4 @@ module.exports = {
   *onError(requestDetail, error) { /* ... */ },
   // https连接服务器出错
   *onConnectError(requestDetail, error) { /* ... */ }
-};
+};  

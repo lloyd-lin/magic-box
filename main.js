@@ -40,6 +40,7 @@ function initialize () {
     } 
     
     mainWindow = new BrowserWindow(windowOptions)
+    global.magicWindow = mainWindow;
     // This is where the magic happens!
     try {
       mainWindow.webContents.debugger.attach('1.2')

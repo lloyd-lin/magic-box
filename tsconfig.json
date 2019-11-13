@@ -1,6 +1,7 @@
 {
   "tslint": "./tslint.json",
   "compilerOptions": {
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "outDir": "./dist/",
     "sourceMap": true,
@@ -26,5 +27,5 @@
   },
   "compileOnSave": false,
   "exclude": ["node_modules"],
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/renderer/trace-panel/track.jsx"]
 }

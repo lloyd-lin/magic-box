@@ -19,7 +19,6 @@ const createServer = () => {
   proxyServer = new AnyProxy.ProxyServer(options);
   
   proxyServer.on('ready', () => { 
-    console.log('ready')
     const httpsProxy = `http://127.0.0.1:8001,direct://`
     const httpProxy = `http://127.0.0.1:8001,direct://`
     session.defaultSession.setProxy(

@@ -2,23 +2,37 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { string } from 'prop-types';
+import TrackPanel from '../renderer/trace-panel/track'
+import { Provider } from 'mobx-react';
+
+import { observer, inject } from 'mobx-react';
+import { urlStoreMessageListenerInit } from '../utils/data-reslover'
+import Store from '../utils/store'
+import './homepage.scss';
+
+const urlStore = new Store.UrlStore();
+urlStoreMessageListenerInit((url) => {
+  urlStore.appendUrl(url);
+});
+
 const WebView = require('react-electron-web-view')
-// import './homepage.scss';
+
 
 const ChannelContainer = styled.div`
   display:flex;
 `
 
 const ChannelView = styled.div`
-    width: 375px;
-    height: 812px;
+    width: 395px;
+    height: 832px;
   `
   const ChannelPlugin = styled.div`
-  background-color:black;
   display: block;
   flex: 1;
+  color: red;
 `
-
+@inject('urlStore')
+@observer
 class MyApp extends React.Component {
   webview = React.createRef()
 
@@ -40,10 +54,16 @@ class MyApp extends React.Component {
         </WebView>
       </ChannelView>
       <ChannelPlugin>
+          <TrackPanel urlGroup={this.props.urlStore.urlGroup}></TrackPanel>
+          {/* {this.props.urlStore.urlGroup.join(',')} */}
       </ChannelPlugin>
     </ChannelContainer>
   }
 }
 
 
-ReactDOM.render(<MyApp />, document.getElementById('app'));
+ReactDOM.render(
+  <Provider urlStore = {urlStore}>
+    <MyApp />
+  </Provider>, 
+document.getElementById('app'));
